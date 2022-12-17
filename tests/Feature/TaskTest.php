@@ -51,6 +51,52 @@ class TaskTest extends TestCase
     /**
      * @test
      */
+    public function タイトルが空の場合は登録できない()
+    {
+        // データの作成
+        $data = [
+            'title' => ''
+        ];
+
+        // postのレスポンスを代入
+        $response = $this->postJson('api/tasks', $data);
+
+        $response
+            // ステータスコードの確認
+            ->assertStatus(422)
+
+            // タイトルが空のエラーかどうかの確認
+            ->assertJsonValidationErrors([
+                'title' => 'The title field is required'
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function タイトルが255文字より多い場合は登録できない()
+    {
+        // データの作成
+        $data = [
+            'title' => str_repeat('あ', 256)
+        ];
+
+        // postのレスポンスを代入
+        $response = $this->postJson('api/tasks', $data);
+
+        $response
+            // ステータスコードの確認
+            ->assertStatus(422)
+
+            // 255文字以下にしてくださいというエラーかどうかの確認
+            ->assertJsonValidationErrors([
+                'title' => 'The title must not be greater than 255 characters.'
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function タスクを更新することができる()
     {
         // データを作成

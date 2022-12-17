@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
+// use App\Http\Requests\StoreTaskRequest;
+// use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
+// use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -22,10 +24,10 @@ class TaskController extends Controller
     /**
      * タスクの新規登録
      *
-     * @param  Request  $request
+     * @param  TaskRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreTaskRequest $request)
+    public function store(TaskRequest $request)
     {
         // 作成されたタスクを変数に代入
         $task = Task::create($request->all());
@@ -45,19 +47,19 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show(Task $task)
-    {
-        //
-    }
+    // public function show(Task $task)
+    // {
+    //     //
+    // }
 
     /**
      * タスク更新
      *
-     * @param  \App\Http\Requests\UpdateTaskRequest  $request
+     * @param  TaskRequest  $request
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
         // 更新されたタスクのタイトルを代入
         $task->title = $request->title;
