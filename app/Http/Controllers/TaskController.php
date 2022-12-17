@@ -20,14 +20,23 @@ class TaskController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * タスクの新規登録
      *
-     * @param  \App\Http\Requests\StoreTaskRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreTaskRequest $request)
     {
-        //
+        // 作成されたタスクを変数に代入
+        $task = Task::create($request->all());
+
+        if ($task) {
+            // 成功した場合は送られてきたものとステータスコード201を返す
+            return response()->json($task, 201);
+        } else {
+            // 失敗した場合は、空配列とステータスコード500を返す
+            return response()->json([], 500);
+        }
     }
 
     /**
@@ -42,25 +51,42 @@ class TaskController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * タスク更新
      *
      * @param  \App\Http\Requests\UpdateTaskRequest  $request
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        // 更新されたタスクのタイトルを代入
+        $task->title = $request->title;
+
+        // taskモデルのupdateの処理を実行
+        if ($task->update()) {
+            // 成功した場合は送られてきたものとステータスコード201を返す
+            return response()->json($task);
+        } else {
+            // 失敗した場合は、空配列とステータスコード500を返す
+            return response()->json([], 500);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * タスク削除
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Task $task)
     {
-        //
+        // taskモデルのdeleteの処理を実行
+        if ($task->delete()) {
+            // 成功した場合は送られてきたものとステータスコード201を返す
+            return response()->json($task);
+        } else {
+            // 失敗した場合は、空配列とステータスコード500を返す
+            return response()->json([], 500);
+        }
     }
 }
